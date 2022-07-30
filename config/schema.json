@@ -1,0 +1,706 @@
+[
+    {
+      "database": "pgsync_mwe",
+      "index": "search_mem_leak",
+      "setting": {
+        "analysis": {
+          "analyzer": {
+            "ngram_analyzer": {
+              "filter": [
+                "lowercase"
+              ],
+              "type": "custom",
+              "tokenizer": "ngram_tokenizer"
+            }
+          },
+          "tokenizer": {
+            "ngram_tokenizer": {
+              "token_chars": [
+                "letter",
+                "digit",
+                "punctuation",
+                "symbol"
+              ],
+              "type": "ngram",
+              "min_gram": "2",
+              "max_gram": "10"
+            }
+          }
+        },
+        "max_ngram_diff": "8"
+      },
+      "nodes": {
+        "table": "domain",
+        "schema": "memleak",
+        "columns": [
+          "name",
+          "id"
+        ],
+        "children": [
+          {
+            "table": "myuser",
+            "schema": "memleak",
+            "columns": [
+              "id",
+              "name"
+            ],
+            "relationship": {
+              "variant": "object",
+              "type": "one_to_many"
+            },
+            "children": [
+                {
+                  "table": "customer",
+                  "schema": "memleak",
+                  "columns": [
+                    "id",
+                    "name",
+                    "description_md"
+                  ],
+                  "relationship": {
+                    "variant": "object",
+                    "type": "one_to_many"
+                  },
+                  "children": [
+                    {
+                      "table": "item",
+                      "schema": "memleak",
+                      "columns": [
+                        "id",
+                        "name",
+                        "description_md",
+                        "name"
+                      ],
+                      "relationship": {
+                        "variant": "object",
+                        "type": "one_to_many"
+                      },
+                      "children": [
+                        {
+                          "table": "inventory_item",
+                          "schema": "memleak",
+                          "columns": [
+                            "inventory_id",
+                            "item_id"
+                          ],
+                          "relationship": {
+                            "variant": "object",
+                            "type": "one_to_many"
+                          },
+                          "children": [
+                            {
+                              "table": "inventory",
+                              "schema": "memleak",
+                              "columns": [
+                                "id",
+                                "name"
+                              ],
+                              "relationship": {
+                                "variant": "object",
+                                "type": "one_to_one"
+                              }
+                            }
+                          ]
+                        }
+                        
+                    ]
+                    }
+                  ]
+                }
+              ]
+          },
+          {
+            "table": "inventory_domain",
+            "schema": "memleak",
+            "columns": [
+              "id",
+              "inventory_id"
+            ],
+            "relationship": {
+              "variant": "object",
+              "type": "one_to_many"
+            },
+            "children" :[
+                {
+                    "table": "inventory",
+                    "schema": "memleak",
+                    "columns": [
+                      "id",
+                      "name"
+                    ],
+                    "relationship": {
+                      "variant": "object",
+                      "type": "one_to_one"
+                    }
+                  }
+            ]
+        }
+        ]
+      }
+    },
+    {
+        "database": "pgsync_mwe",
+        "index": "search_mem_leak2",
+        "setting": {
+          "analysis": {
+            "analyzer": {
+              "ngram_analyzer": {
+                "filter": [
+                  "lowercase"
+                ],
+                "type": "custom",
+                "tokenizer": "ngram_tokenizer"
+              }
+            },
+            "tokenizer": {
+              "ngram_tokenizer": {
+                "token_chars": [
+                  "letter",
+                  "digit",
+                  "punctuation",
+                  "symbol"
+                ],
+                "type": "ngram",
+                "min_gram": "2",
+                "max_gram": "10"
+              }
+            }
+          },
+          "max_ngram_diff": "8"
+        },
+        "nodes": {
+          "table": "domain",
+          "schema": "memleak",
+          "columns": [
+            "name",
+            "id"
+          ],
+          "children": [
+            {
+              "table": "myuser",
+              "schema": "memleak",
+              "columns": [
+                "id",
+                "name"
+              ],
+              "relationship": {
+                "variant": "object",
+                "type": "one_to_many"
+              },
+              "children": [
+                  {
+                    "table": "customer",
+                    "schema": "memleak",
+                    "columns": [
+                      "id",
+                      "name",
+                      "description_md"
+                    ],
+                    "relationship": {
+                      "variant": "object",
+                      "type": "one_to_many"
+                    },
+                    "children": [
+                      {
+                        "table": "item",
+                        "schema": "memleak",
+                        "columns": [
+                          "id",
+                          "name",
+                          "description_md",
+                          "name"
+                        ],
+                        "relationship": {
+                          "variant": "object",
+                          "type": "one_to_many"
+                        },
+                        "children": [
+                          {
+                            "table": "inventory_item",
+                            "schema": "memleak",
+                            "columns": [
+                              "inventory_id",
+                              "item_id"
+                            ],
+                            "relationship": {
+                              "variant": "object",
+                              "type": "one_to_many"
+                            },
+                            "children": [
+                              {
+                                "table": "inventory",
+                                "schema": "memleak",
+                                "columns": [
+                                  "id",
+                                  "name"
+                                ],
+                                "relationship": {
+                                  "variant": "object",
+                                  "type": "one_to_one"
+                                }
+                              }
+                            ]
+                          }
+                          
+                      ]
+                      }
+                    ]
+                  }
+                ]
+            }
+          ]
+        }
+      },
+      {
+        "database": "pgsync_mwe",
+        "index": "search_mem_leak3",
+        "setting": {
+          "analysis": {
+            "analyzer": {
+              "ngram_analyzer": {
+                "filter": [
+                  "lowercase"
+                ],
+                "type": "custom",
+                "tokenizer": "ngram_tokenizer"
+              }
+            },
+            "tokenizer": {
+              "ngram_tokenizer": {
+                "token_chars": [
+                  "letter",
+                  "digit",
+                  "punctuation",
+                  "symbol"
+                ],
+                "type": "ngram",
+                "min_gram": "2",
+                "max_gram": "10"
+              }
+            }
+          },
+          "max_ngram_diff": "8"
+        },
+        "nodes": {
+          "table": "domain",
+          "schema": "memleak",
+          "columns": [
+            "name",
+            "id"
+          ],
+          "children": [
+            {
+              "table": "myuser",
+              "schema": "memleak",
+              "columns": [
+                "id",
+                "name"
+              ],
+              "relationship": {
+                "variant": "object",
+                "type": "one_to_many"
+              },
+              "children": [
+                  {
+                    "table": "customer",
+                    "schema": "memleak",
+                    "columns": [
+                      "id",
+                      "name",
+                      "description_md"
+                    ],
+                    "relationship": {
+                      "variant": "object",
+                      "type": "one_to_many"
+                    },
+                    "children": [
+                      {
+                        "table": "item",
+                        "schema": "memleak",
+                        "columns": [
+                          "id",
+                          "name",
+                          "description_md",
+                          "name"
+                        ],
+                        "relationship": {
+                          "variant": "object",
+                          "type": "one_to_many"
+                        },
+                        "children": [
+                          {
+                            "table": "inventory_item",
+                            "schema": "memleak",
+                            "columns": [
+                              "inventory_id",
+                              "item_id"
+                            ],
+                            "relationship": {
+                              "variant": "object",
+                              "type": "one_to_many"
+                            },
+                            "children": [
+                              {
+                                "table": "inventory",
+                                "schema": "memleak",
+                                "columns": [
+                                  "id",
+                                  "name"
+                                ],
+                                "relationship": {
+                                  "variant": "object",
+                                  "type": "one_to_one"
+                                }
+                              }
+                            ]
+                          }
+                          
+                      ]
+                      }
+                    ]
+                  }
+                ]
+            }
+          ]
+        }
+      },
+      {
+        "database": "pgsync_mwe",
+        "index": "search_mem_leak4",
+        "setting": {
+          "analysis": {
+            "analyzer": {
+              "ngram_analyzer": {
+                "filter": [
+                  "lowercase"
+                ],
+                "type": "custom",
+                "tokenizer": "ngram_tokenizer"
+              }
+            },
+            "tokenizer": {
+              "ngram_tokenizer": {
+                "token_chars": [
+                  "letter",
+                  "digit",
+                  "punctuation",
+                  "symbol"
+                ],
+                "type": "ngram",
+                "min_gram": "2",
+                "max_gram": "10"
+              }
+            }
+          },
+          "max_ngram_diff": "8"
+        },
+        "nodes": {
+          "table": "domain",
+          "schema": "memleak",
+          "columns": [
+            "name",
+            "id"
+          ],
+          "children": [
+            {
+              "table": "myuser",
+              "schema": "memleak",
+              "columns": [
+                "id",
+                "name"
+              ],
+              "relationship": {
+                "variant": "object",
+                "type": "one_to_many"
+              },
+              "children": [
+                  {
+                    "table": "customer",
+                    "schema": "memleak",
+                    "columns": [
+                      "id",
+                      "name",
+                      "description_md"
+                    ],
+                    "relationship": {
+                      "variant": "object",
+                      "type": "one_to_many"
+                    },
+                    "children": [
+                      {
+                        "table": "item",
+                        "schema": "memleak",
+                        "columns": [
+                          "id",
+                          "name",
+                          "description_md",
+                          "name"
+                        ],
+                        "relationship": {
+                          "variant": "object",
+                          "type": "one_to_many"
+                        },
+                        "children": [
+                          {
+                            "table": "inventory_item",
+                            "schema": "memleak",
+                            "columns": [
+                              "inventory_id",
+                              "item_id"
+                            ],
+                            "relationship": {
+                              "variant": "object",
+                              "type": "one_to_many"
+                            },
+                            "children": [
+                              {
+                                "table": "inventory",
+                                "schema": "memleak",
+                                "columns": [
+                                  "id",
+                                  "name"
+                                ],
+                                "relationship": {
+                                  "variant": "object",
+                                  "type": "one_to_one"
+                                }
+                              }
+                            ]
+                          }
+                          
+                      ]
+                      }
+                    ]
+                  }
+                ]
+            }
+          ]
+        }
+      },
+      {
+        "database": "pgsync_mwe",
+        "index": "search_mem_leak5",
+        "setting": {
+          "analysis": {
+            "analyzer": {
+              "ngram_analyzer": {
+                "filter": [
+                  "lowercase"
+                ],
+                "type": "custom",
+                "tokenizer": "ngram_tokenizer"
+              }
+            },
+            "tokenizer": {
+              "ngram_tokenizer": {
+                "token_chars": [
+                  "letter",
+                  "digit",
+                  "punctuation",
+                  "symbol"
+                ],
+                "type": "ngram",
+                "min_gram": "2",
+                "max_gram": "10"
+              }
+            }
+          },
+          "max_ngram_diff": "8"
+        },
+        "nodes": {
+          "table": "domain",
+          "schema": "memleak",
+          "columns": [
+            "name",
+            "id"
+          ],
+          "children": [
+            {
+              "table": "myuser",
+              "schema": "memleak",
+              "columns": [
+                "id",
+                "name"
+              ],
+              "relationship": {
+                "variant": "object",
+                "type": "one_to_many"
+              },
+              "children": [
+                  {
+                    "table": "customer",
+                    "schema": "memleak",
+                    "columns": [
+                      "id",
+                      "name",
+                      "description_md"
+                    ],
+                    "relationship": {
+                      "variant": "object",
+                      "type": "one_to_many"
+                    },
+                    "children": [
+                      {
+                        "table": "item",
+                        "schema": "memleak",
+                        "columns": [
+                          "id",
+                          "name",
+                          "description_md",
+                          "name"
+                        ],
+                        "relationship": {
+                          "variant": "object",
+                          "type": "one_to_many"
+                        },
+                        "children": [
+                          {
+                            "table": "inventory_item",
+                            "schema": "memleak",
+                            "columns": [
+                              "inventory_id",
+                              "item_id"
+                            ],
+                            "relationship": {
+                              "variant": "object",
+                              "type": "one_to_many"
+                            },
+                            "children": [
+                              {
+                                "table": "inventory",
+                                "schema": "memleak",
+                                "columns": [
+                                  "id",
+                                  "name"
+                                ],
+                                "relationship": {
+                                  "variant": "object",
+                                  "type": "one_to_one"
+                                }
+                              }
+                            ]
+                          }
+                          
+                      ]
+                      }
+                    ]
+                  }
+                ]
+            }
+          ]
+        }
+      },
+      {
+        "database": "pgsync_mwe",
+        "index": "search_mem_leak6",
+        "setting": {
+          "analysis": {
+            "analyzer": {
+              "ngram_analyzer": {
+                "filter": [
+                  "lowercase"
+                ],
+                "type": "custom",
+                "tokenizer": "ngram_tokenizer"
+              }
+            },
+            "tokenizer": {
+              "ngram_tokenizer": {
+                "token_chars": [
+                  "letter",
+                  "digit",
+                  "punctuation",
+                  "symbol"
+                ],
+                "type": "ngram",
+                "min_gram": "2",
+                "max_gram": "10"
+              }
+            }
+          },
+          "max_ngram_diff": "8"
+        },
+        "nodes": {
+          "table": "domain",
+          "schema": "memleak",
+          "columns": [
+            "name",
+            "id"
+          ],
+          "children": [
+            {
+              "table": "myuser",
+              "schema": "memleak",
+              "columns": [
+                "id",
+                "name"
+              ],
+              "relationship": {
+                "variant": "object",
+                "type": "one_to_many"
+              },
+              "children": [
+                  {
+                    "table": "customer",
+                    "schema": "memleak",
+                    "columns": [
+                      "id",
+                      "name",
+                      "description_md"
+                    ],
+                    "relationship": {
+                      "variant": "object",
+                      "type": "one_to_many"
+                    },
+                    "children": [
+                      {
+                        "table": "item",
+                        "schema": "memleak",
+                        "columns": [
+                          "id",
+                          "name",
+                          "description_md",
+                          "name"
+                        ],
+                        "relationship": {
+                          "variant": "object",
+                          "type": "one_to_many"
+                        },
+                        "children": [
+                          {
+                            "table": "inventory_item",
+                            "schema": "memleak",
+                            "columns": [
+                              "inventory_id",
+                              "item_id"
+                            ],
+                            "relationship": {
+                              "variant": "object",
+                              "type": "one_to_many"
+                            },
+                            "children": [
+                              {
+                                "table": "inventory",
+                                "schema": "memleak",
+                                "columns": [
+                                  "id",
+                                  "name"
+                                ],
+                                "relationship": {
+                                  "variant": "object",
+                                  "type": "one_to_one"
+                                }
+                              }
+                            ]
+                          }
+                          
+                      ]
+                      }
+                    ]
+                  }
+                ]
+            }
+          ]
+        }
+      }
+]

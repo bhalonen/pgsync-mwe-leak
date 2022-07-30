@@ -1,0 +1,102 @@
+version: "3.8"
+
+
+services:
+
+  postgres:
+    image: "postgres-13"
+    ports:
+      - "5432:5432"
+    build:
+      context: "${PWD}/docker/postgres"
+      dockerfile: "${PWD}/docker/postgres/Dockerfile"
+      args:
+        IMAGE: "postgres:13-alpine"
+    restart: always
+    env_file: ".env"
+    command: [
+      "-c", "config_file=/etc/postgres.conf",
+      
+      "-c", "wal_level=logical",
+      "-c", "max_wal_senders=8",
+      "-c", "max_replication_slots=32",
+      
+      "-c", "archive_mode=${PGARCHIVEMODE}",
+      "-c", "archive_command=timeout 600 wal-g wal-push %p",
+      "-c", "archive_timeout=600",
+    ]
+    volumes:
+      - "${PWD}/.gmrc:/init/.gmrc:ro"
+      - "${PWD}/migrations:/init/migrations"
+      - "${PWD}/data:/var/lib/postgresql/data"
+      - "${PWD}/postgresql.conf:/etc/postgres.conf:ro"
+    depends_on:
+      - "elasticsearch"
+
+
+  elasticsearch:
+    image: "elasticsearch-8"
+    build:
+      context: "${PWD}/docker/elasticsearch"
+      dockerfile: "${PWD}/docker/elasticsearch/Dockerfile"
+      args:
+        IMAGE: "docker.elastic.co/elasticsearch/elasticsearch:8.3.2"
+    restart: always
+    env_file: ".env"
+    environment:  # if any of these might be deployment-specific, then put them in example.env (and .env)
+      "xpack.security.enabled": "false"
+      "discovery.type": "single-node"
+      "bootstrap.memory_lock": "true"
+      "ES_JAVA_OPTS": "-Xms2g -Xmx2g"
+      "cluster.max_shards_per_node": "5000"
+      "action.destructive_requires_name": "false"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - "${PWD}/search:/search"
+  
+  
+  redis:
+    image: "redis-7"
+    build:
+      context: "${PWD}/docker/redis"
+      dockerfile: "${PWD}/docker/redis/Dockerfile"
+      args:
+        IMAGE: "redis:7-alpine"
+    restart: always
+    env_file: ".env"
+  
+  
+  pgsync:
+    image: "pgsync-2"
+    build:
+      context: "${PWD}/docker/pgsync"
+      dockerfile: "${PWD}/docker/pgsync/Dockerfile"
+      args:
+        IMAGE: "python:3-alpine"
+        PGSYNC_VERSION: "2.3.1"
+    restart: always
+    env_file: ".env"
+    depends_on:
+      - elasticsearch
+      - redis
+      - postgres
+    environment:
+      PGHOST: "postgres"
+      PGUSER: "${POSTGRES_USER}"
+      PGPASSWORD: "${POSTGRES_PASSWORD}"
+      PGDATABASE: "${POSTGRES_DB}"
+      PG_HOST: "postgres"
+      PG_USER: "${POSTGRES_USER}"
+      PG_PASSWORD: "${POSTGRES_PASSWORD}"
+      PG_DATABASE: "${POSTGRES_DB}"
+      REDIS_HOST: "redis"
+      ELASTICSEARCH_HOST: "elasticsearch"
+      ELASTICSEARCH_TIMEOUT: "60"
+      # ELASTICSEARCH_STREAMING_BULK: "true"
+      LOG_INTERVAL: "60"
+      # POLL_TIMEOUT: "2"
+    volumes:
+      - "${PWD}/config/:/pgsync/config:ro"
