@@ -46,7 +46,7 @@ begin
             FROM memleak.domain  
             ORDER BY random()  
             LIMIT 1;
-            insert into memleak.inventory_item (inventory_id, domain_id) values (inventory_id, domain_id);
+            insert into memleak.inventory_domain (inventory_id, domain_id) values (inventory_id, domain_id);
         end loop;
    end loop;
 end; 

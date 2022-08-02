@@ -76,7 +76,7 @@ services:
       dockerfile: "${PWD}/docker/pgsync/Dockerfile"
       args:
         IMAGE: "python:3-alpine"
-        PGSYNC_VERSION: "2.3.1"
+        PGSYNC_VERSION: "2.3.2"
     restart: always
     env_file: ".env"
     depends_on:
